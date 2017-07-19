@@ -11627,19 +11627,32 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var UPDATELOCATION = exports.UPDATELOCATION = "UPDATELOCATION";
+var ADDMARKER = exports.ADDMARKER = "ADDMARKER";
 
 var findLocation = exports.findLocation = function findLocation() {
   return function (dispatch) {
     navigator.geolocation.getCurrentPosition(function (position) {
-      console.log(position);
       dispatch(updateLocation(position.coords));
     });
+  };
+};
+
+var addMarker = exports.addMarker = function addMarker(coords) {
+  return function (dispatch) {
+    dispatch(pushMarker(coords));
   };
 };
 
 var updateLocation = exports.updateLocation = function updateLocation(coords) {
   return {
     type: UPDATELOCATION,
+    coords: coords
+  };
+};
+
+var pushMarker = exports.pushMarker = function pushMarker(coords) {
+  return {
+    type: ADDMARKER,
     coords: coords
   };
 };
@@ -24891,19 +24904,31 @@ var _MapActions = __webpack_require__(121);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var defaultState = {
+  lat: 37.7749,
+  lng: -122.4149,
+  markers: []
+};
+
 var MapReducer = function MapReducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
   var action = arguments[1];
 
   Object.freeze(state);
   var newState = (0, _merge2.default)({}, state);
-  console.log(action);
+
   switch (action.type) {
     case _MapActions.UPDATELOCATION:
       newState.lng = action.coords.longitude;
       newState.lat = action.coords.latitude;
-      console.log(newState);
+
       return newState;
+
+    case _MapActions.ADDMARKER:
+      newState.markers.push(action.coords);
+
+      return newState;
+
     default:
       return state;
   }
@@ -28478,6 +28503,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     findLocation: function findLocation() {
       return dispatch((0, _MapActions.findLocation)());
+    },
+    addMarker: function addMarker(coords) {
+      return dispatch((0, _MapActions.addMarker)(coords));
     }
   };
 };
@@ -28536,8 +28564,7 @@ var Map = function (_Component) {
       var _this2 = this;
 
       var mapDOMNode = _reactDom2.default.findDOMNode(this.refs.map);
-      var center = this.props.coords || { lat: 37.7749, lng: -122.4149 };
-      console.log(this.props.coords);
+
       var mapOptions = {
         center: { lat: 37.7749, lng: -122.4149 },
         zoom: 12
@@ -28548,12 +28575,21 @@ var Map = function (_Component) {
       });
     }
   }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.coords !== nextProps.coords) {
+        var center = new google.maps.LatLng(nextProps.coords.lat, nextProps.coords.lng);
+        this.map.panTo(center);
+      }
+    }
+  }, {
     key: 'placeMarker',
     value: function placeMarker(coords) {
       var marker = new google.maps.Marker({
         position: coords,
         map: this.map
       });
+      this.props.addMarker(marker);
     }
   }, {
     key: 'render',
@@ -28562,8 +28598,6 @@ var Map = function (_Component) {
         width: window.innerWidth,
         height: window.innerHeight
       };
-
-      console.log(window.heigth);
 
       return _react2.default.createElement(
         'div',
