@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
+import Buttons from '../buttons/ButtonsContainer';
 
 class Map extends Component {
   constructor(props){
@@ -48,6 +49,7 @@ class Map extends Component {
 
     return (
       <div className='Map'>
+        <Buttons />
         <div ref='map' id="map" style={mapStyle}>Map</div>
       </div>
     );
