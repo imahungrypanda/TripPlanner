@@ -4,6 +4,8 @@ import ReactDOM from 'react-dom'
 class Map extends Component {
   constructor(props){
     super(props);
+
+    this.placeMarker = this.placeMarker.bind(this);
   }
 
   componentDidMount(){
@@ -13,7 +15,17 @@ class Map extends Component {
       zoom: 12
     };
     this.map = new google.maps.Map(mapDOMNode, mapOptions);
-    console.log(navigator.geolocation);
+    this.map.addListener("click", e => {
+      console.log(e.latLng);
+      this.placeMarker(e.latLng);
+    });
+  }
+
+  placeMarker(coords) {
+    let marker = new google.maps.Marker({
+      position: coords,
+      map: this.map
+    });
   }
 
   render() {

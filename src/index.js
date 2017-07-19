@@ -6,6 +6,7 @@ import Home from './home/Home';
 
 document.addEventListener('DOMContentLoaded', () => {
   const store = configureStore();
+  window.store = store;
   ReactDOM.render(<Home store={ store } />, document.getElementById('root'));
 });
 
