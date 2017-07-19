@@ -8,17 +8,28 @@ class Map extends Component {
     this.placeMarker = this.placeMarker.bind(this);
   }
 
+  componentWillMount() {
+    this.props.findLocation();
+  }
+
   componentDidMount(){
     const mapDOMNode = ReactDOM.findDOMNode(this.refs.map);
+
     let mapOptions = {
       center: {lat: 37.7749, lng: -122.4149},
       zoom: 12
     };
     this.map = new google.maps.Map(mapDOMNode, mapOptions);
     this.map.addListener("click", e => {
-      console.log(e.latLng);
       this.placeMarker(e.latLng);
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.coords !== nextProps.coords) {
+      let center = new google.maps.LatLng(nextProps.coords.lat, nextProps.coords.lng);
+      this.map.panTo(center);
+    }
   }
 
   placeMarker(coords) {
@@ -26,6 +37,7 @@ class Map extends Component {
       position: coords,
       map: this.map
     });
+    this.props.addMarker(marker);
   }
 
   render() {
@@ -33,8 +45,6 @@ class Map extends Component {
       width: window.innerWidth,
       height: window.innerHeight
     };
-
-    console.log(window.heigth);
 
     return (
       <div className='Map'>

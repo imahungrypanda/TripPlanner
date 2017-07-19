@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import Map from '../map/Map';
+import Map from '../map/MapContainer';
 
 const Home = ({store}) => {
   return(
