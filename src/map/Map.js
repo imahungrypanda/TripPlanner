@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 // import logo from './logo.svg';
 // import './App.css';
 
-class App extends Component {
+class Map extends Component {
   constructor(props){
     super(props);
   }
@@ -22,10 +22,11 @@ class App extends Component {
 
   render() {
     const mapStyle = {
-      width: 500,
-      height: 300,
-      border: '1px solid black'
+      width: window.innerWidth,
+      height: window.innerHeight
     };
+
+    console.log(window.heigth);
 
     return (
       <div className='Map'>
@@ -35,4 +36,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default Map;
