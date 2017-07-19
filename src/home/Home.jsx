@@ -1,14 +1,13 @@
 import React from 'react';
-import { Provider } from 'react-redux';
 import Map from '../map/MapContainer';
 import Buttons from '../buttons/ButtonsContainer';
 
-const Home = ({store}) => {
+const Home = () => {
   return(
-    <Provider store={ store }>
-
+    <div >
+      <Buttons />
       <Map />
-    </Provider>
+    </div>
   );
 }
 

@@ -7,6 +7,7 @@ class Map extends Component {
     super(props);
 
     this.placeMarker = this.placeMarker.bind(this);
+    this.clearMarkers = this.clearMarkers.bind(this);
   }
 
   componentWillMount() {
@@ -14,6 +15,7 @@ class Map extends Component {
   }
 
   componentDidMount(){
+    console.log(this.props);
     const mapDOMNode = ReactDOM.findDOMNode(this.refs.map);
 
     let mapOptions = {
@@ -27,9 +29,13 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    // console.log(nextProps)
     if (this.props.coords !== nextProps.coords) {
       let center = new google.maps.LatLng(nextProps.coords.lat, nextProps.coords.lng);
       this.map.panTo(center);
+    }
+    if (nextProps.clear && !this.props.clear) {
+      this.clearMarkers();
     }
   }
 
@@ -41,6 +47,10 @@ class Map extends Component {
     this.props.addMarker(marker);
   }
 
+  clearMarkers() {
+    this.props.markers.forEach(marker => console.log(marker));
+  }
+
   render() {
     const mapStyle = {
       width: window.innerWidth,
@@ -49,7 +59,7 @@ class Map extends Component {
 
     return (
       <div className='Map'>
-        <Buttons />
+
         <div ref='map' id="map" style={mapStyle}>Map</div>
       </div>
     );

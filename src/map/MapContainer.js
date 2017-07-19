@@ -3,7 +3,9 @@ import Map from './Map';
 import { findLocation, addMarker } from './MapActions';
 
 const mapStateToProps = state => ({
-  coords: state.map
+  coords: state.map.coords,
+  markers: state.map.markers,
+  clear: state.map.markers.length === 0
 });
 
 const mapDispatchToProps = dispatch => ({
