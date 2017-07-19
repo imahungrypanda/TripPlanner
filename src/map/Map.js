@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
-// import logo from './logo.svg';
-// import './App.css';
 
 class Map extends Component {
   constructor(props){
@@ -9,15 +7,13 @@ class Map extends Component {
   }
 
   componentDidMount(){
-    console.log(google.maps);
     const mapDOMNode = ReactDOM.findDOMNode(this.refs.map);
-    console.log(mapDOMNode);
     let mapOptions = {
       center: {lat: 37.7749, lng: -122.4149},
       zoom: 12
     };
     this.map = new google.maps.Map(mapDOMNode, mapOptions);
-    console.log(this.map);
+    console.log(navigator.geolocation);
   }
 
   render() {
