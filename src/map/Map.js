@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
-import Buttons from '../buttons/ButtonsContainer';
 import "./Buttons.css";
 
 class Map extends Component {
