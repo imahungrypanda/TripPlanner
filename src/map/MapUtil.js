@@ -1,4 +1,4 @@
-// import { Graph } from 'graphlib';
+import { Graph } from 'graphlib';
 
 export const parseMarkers = markers => {
   return markers.map(marker => {
@@ -8,6 +8,6 @@ export const parseMarkers = markers => {
 
 
 export const createGraph = routes => {
-  // let g = new Graph();
-  console.log(routes);
+  let g = new Graph();
+  console.log("createGraph: ", routes);
 };

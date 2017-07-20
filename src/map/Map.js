@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 import "./Buttons.css";
-// import { createGraph } from './MapUtil';
+import { createGraph } from './MapUtil';
 
 class Map extends Component {
   constructor(props){
@@ -9,7 +9,6 @@ class Map extends Component {
 
     this.placeMarker = this.placeMarker.bind(this);
     this.clearMarkers = this.clearMarkers.bind(this);
-    this.createGraph = this.createGraph.bind(this);
   }
 
   componentWillMount() {
@@ -27,6 +26,7 @@ class Map extends Component {
     this.map.addListener("click", e => {
       this.placeMarker(e.latLng);
     });
+      this.directionsDisplay = new google.maps.DirectionsRenderer();
 
     document.getElementById('clear').addEventListener("click", e => {
       e.preventDefault();
@@ -35,65 +35,29 @@ class Map extends Component {
 
     document.getElementById('route').addEventListener("click", e => {
       e.preventDefault();
-      // NOTE route will be what creates the graph and determines the best route.
-      // NOTE consider adding all the paths from each marker before finding the best path
-      // console.log("route");
 
-      let service = new google.maps.DistanceMatrixService();
-      let origins = this.props.nodes;
-      // console.log(origins)
-      origins.unshift(this.props.coords)
-      console.log(origins)
-      console.log("route");
+      if (Object.keys(this.props.coords).length === 0) {}
 
-      service.getDistanceMatrix(
-      {
-        origins: origins,
-        destinations: this.props.nodes,
+      let directions = new google.maps.DirectionsService();
+      this.directionsDisplay.setMap(this.map);
+
+      directions.route({
+        origin: this.props.coords,
+        destination: this.props.coords,
+        waypoints: this.props.nodes.map(node => ({ location: node, stopover: true })),
+        optimizeWaypoints: true,
         travelMode: google.maps.TravelMode.DRIVING,
         unitSystem: google.maps.UnitSystem.IMPERIAL
-      }, callback);
-
-
-     const callback = (response, status) => {
-        let result = {};
-        console.log("route");
-        if (status != google.maps.DistanceMatrixStatus.OK) {
-            alert('Error was: ' + status);
-        } else {
-          let origins = response.originAddresses;
-          let destinations = response.destinationAddresses;
-          result.origins = origins;
-console.log("route");
-          for (let i = 0; i < origins.length; i++) {
-            let elements = response.rows[i].elements;
-            let arr = [];
-            for (var j = i + 1; j < elements.length; j++) {
-              // console.log(elements[j]);
-              arr.push({ dest: origins[j], time: elements[j].duration.value, dist: elements[j].distance.value });
-            }
-console.log("route");
-            result[origins[i]] = arr;
-          }
+      }, function(response, status) {
+        if (status === "OK") {
+          response.routes[0].legs = response.routes[0].legs.filter(leg => leg.distance.value > 0);
+        // response.routes[0].legs.forEach(leg => console.log("Start: ", leg.start_address, "  End: ", leg.end_address))
+          this.directionsDisplay.setDirections(response);
         }
-console.log("route");
-        // console.table(result);
-        // this.createGraph(result);
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        else {
+          window.alert('Directions request failed due to ' + status);
+        }
+      });
     });
 
     document.getElementById('history').addEventListener("click", e => {
@@ -111,10 +75,6 @@ console.log("route");
     }
   }
 
-  createGraph(routes){
-    console.log(routes);
-  }
-
   placeMarker(coords) {
     let marker = new google.maps.Marker({
       position: coords,
@@ -126,6 +86,7 @@ console.log("route");
   clearMarkers() {
     this.props.clearMarkers();
     this.props.clear.forEach(marker => marker.setMap(null));
+    this.directionsDisplay.setMap(null);
   }
 
   render() {

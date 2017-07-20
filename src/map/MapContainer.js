@@ -13,8 +13,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   findLocation: () => dispatch(findLocation()),
   addMarker: coords => dispatch(addMarker(coords)),
-  clearMarkers: () => dispatch(clearMarkers())
-  // createGraph: routes => createGraph(routes)
+  clearMarkers: () => dispatch(clearMarkers()),
+  createGraph: routes => dispatch(createGraph(routes))
 });
 
 
