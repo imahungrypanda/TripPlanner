@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     </Provider>
   );
 
-
   ReactDOM.render(<Root store={ store } />, document.getElementById('root'));
 });
 

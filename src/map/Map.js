@@ -31,6 +31,19 @@ class Map extends Component {
       this.clearMarkers();
     });
 
+    document.getElementById('route').addEventListener("click", e => {
+      e.preventDefault();
+      // NOTE route will be what creates the graph and determines the best route.
+      // NOTE consider adding all the paths from each marker before finding the best path
+      console.log("route");
+    });
+
+    document.getElementById('history').addEventListener("click", e => {
+      e.preventDefault();
+      // NOTE maybe have this be a modal that appears?
+      console.log("history");
+    });
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,6 +73,8 @@ class Map extends Component {
       height: window.innerHeight
     };
 
+    // TODO add div for errors
+    // TODO add div for time of the best route
     return (
       <div>
         <div id="buttons">

@@ -28613,6 +28613,19 @@ var Map = function (_Component) {
         e.preventDefault();
         _this2.clearMarkers();
       });
+
+      document.getElementById('route').addEventListener("click", function (e) {
+        e.preventDefault();
+        // NOTE route will be what creates the graph and determines the best route.
+        // NOTE consider adding all the paths from each marker before finding the best path
+        console.log("route");
+      });
+
+      document.getElementById('history').addEventListener("click", function (e) {
+        e.preventDefault();
+        // NOTE maybe have this be a modal that appears?
+        console.log("history");
+      });
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -28648,6 +28661,8 @@ var Map = function (_Component) {
         height: window.innerHeight
       };
 
+      // TODO add div for errors
+      // TODO add div for time of the best route
       return _react2.default.createElement(
         'div',
         null,

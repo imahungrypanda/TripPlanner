@@ -4,7 +4,7 @@
   "description": "",
   "main": "webpack.config.js",
   "scripts": {
-    "start": "webpack-dev-server --hot",
+    "start": "webpack-dev-server --hot --progress --colors",
     "build": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -32,7 +32,6 @@ const MapReducer = (state = defaultState, action) => {
     default:
       return state;
   }
-
 }
 
 export default MapReducer;

@@ -4,7 +4,6 @@ import Map from '../map/MapContainer';
 const Home = () => {
   return(
     <div >
-
       <Map />
     </div>
   );
