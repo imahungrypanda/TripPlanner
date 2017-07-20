@@ -19,7 +19,6 @@ const MapReducer = (state = defaultState, action) => {
       return newState;
 
     case ADDMARKER:
-      // console.log( action.co
       newState.markers.push(action.coords);
 
       return newState;

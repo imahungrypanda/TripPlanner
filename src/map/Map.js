@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 import "./Buttons.css";
+// import { createGraph } from './MapUtil';
 
 class Map extends Component {
   constructor(props){
@@ -8,6 +9,7 @@ class Map extends Component {
 
     this.placeMarker = this.placeMarker.bind(this);
     this.clearMarkers = this.clearMarkers.bind(this);
+    this.createGraph = this.createGraph.bind(this);
   }
 
   componentWillMount() {
@@ -35,14 +37,14 @@ class Map extends Component {
       e.preventDefault();
       // NOTE route will be what creates the graph and determines the best route.
       // NOTE consider adding all the paths from each marker before finding the best path
-      console.log("route");
-      // console.log(this.props);
+      // console.log("route");
 
       let service = new google.maps.DistanceMatrixService();
       let origins = this.props.nodes;
       // console.log(origins)
       origins.unshift(this.props.coords)
-      // console.log(origins)
+      console.log(origins)
+      console.log("route");
 
       service.getDistanceMatrix(
       {
@@ -53,24 +55,31 @@ class Map extends Component {
       }, callback);
 
 
-function callback(response, status) {
-    let result = {};
-    if (status != google.maps.DistanceMatrixStatus.OK) {
-        alert('Error was: ' + status);
-    } else {
-        var origins = response.originAddresses;
-        var destinations = response.destinationAddresses;
-        result.origins = origins;
-console.log(response)
-        // for (var i = 0; i < origins.length; i++) {
-        //     var results = response.rows[i].elements;
-        //         console.log(results[i]);
-        //         // document.getElementById('ctl00_MainContent_hidSpeed').value += results[i].distance.text+"&";
-        // }
+     const callback = (response, status) => {
+        let result = {};
+        console.log("route");
+        if (status != google.maps.DistanceMatrixStatus.OK) {
+            alert('Error was: ' + status);
+        } else {
+          let origins = response.originAddresses;
+          let destinations = response.destinationAddresses;
+          result.origins = origins;
+console.log("route");
+          for (let i = 0; i < origins.length; i++) {
+            let elements = response.rows[i].elements;
+            let arr = [];
+            for (var j = i + 1; j < elements.length; j++) {
+              // console.log(elements[j]);
+              arr.push({ dest: origins[j], time: elements[j].duration.value, dist: elements[j].distance.value });
+            }
+console.log("route");
+            result[origins[i]] = arr;
+          }
+        }
+console.log("route");
+        // console.table(result);
+        // this.createGraph(result);
     }
-
-    console.table(result);
-}
 
 
 
@@ -100,6 +109,10 @@ console.log(response)
       let center = new google.maps.LatLng(nextProps.coords.lat, nextProps.coords.lng);
       this.map.panTo(center);
     }
+  }
+
+  createGraph(routes){
+    console.log(routes);
   }
 
   placeMarker(coords) {

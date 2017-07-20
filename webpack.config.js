@@ -28,7 +28,10 @@ module.exports = {
     filename: './public/bundle.js'
   },
   resolve: {
-    extensions: ['.js', '.jsx', '*']
+    extensions: ['.js', '.jsx', '*'],
+    alias: {
+            'react-redux': path.join(__dirname, '/node_modules/react-redux/dist/react-redux.min')
+        }
   },
   plugins: plugins,
   module: {

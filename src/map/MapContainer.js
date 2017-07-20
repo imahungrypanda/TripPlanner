@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Map from './Map';
 import { findLocation, addMarker, clearMarkers } from './MapActions';
-import { parseMarkers } from './MapUtil';
+import { parseMarkers, createGraph } from './MapUtil';
 
 const mapStateToProps = state => ({
   coords: state.map.coords,
@@ -14,6 +14,7 @@ const mapDispatchToProps = dispatch => ({
   findLocation: () => dispatch(findLocation()),
   addMarker: coords => dispatch(addMarker(coords)),
   clearMarkers: () => dispatch(clearMarkers())
+  // createGraph: routes => createGraph(routes)
 });
 
 
