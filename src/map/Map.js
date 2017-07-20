@@ -36,6 +36,55 @@ class Map extends Component {
       // NOTE route will be what creates the graph and determines the best route.
       // NOTE consider adding all the paths from each marker before finding the best path
       console.log("route");
+      // console.log(this.props);
+
+      let service = new google.maps.DistanceMatrixService();
+      let origins = this.props.nodes;
+      // console.log(origins)
+      origins.unshift(this.props.coords)
+      // console.log(origins)
+
+      service.getDistanceMatrix(
+      {
+        origins: origins,
+        destinations: this.props.nodes,
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.IMPERIAL
+      }, callback);
+
+
+function callback(response, status) {
+    let result = {};
+    if (status != google.maps.DistanceMatrixStatus.OK) {
+        alert('Error was: ' + status);
+    } else {
+        var origins = response.originAddresses;
+        var destinations = response.destinationAddresses;
+        result.origins = origins;
+console.log(response)
+        // for (var i = 0; i < origins.length; i++) {
+        //     var results = response.rows[i].elements;
+        //         console.log(results[i]);
+        //         // document.getElementById('ctl00_MainContent_hidSpeed').value += results[i].distance.text+"&";
+        // }
+    }
+
+    console.table(result);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     });
 
     document.getElementById('history').addEventListener("click", e => {
@@ -43,7 +92,6 @@ class Map extends Component {
       // NOTE maybe have this be a modal that appears?
       console.log("history");
     });
-
   }
 
   componentWillReceiveProps(nextProps) {
