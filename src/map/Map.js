@@ -30,7 +30,8 @@ class Map extends Component {
     document.getElementById('clear').addEventListener("click", e => {
       e.preventDefault();
       this.clearMarkers();
-    })
+    });
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -62,14 +63,14 @@ class Map extends Component {
 
     return (
       <div>
-            <div id="buttons">
-        <button id="clear" >Clear</button>
-        <button id="route">Find best route</button>
-        <button id="history">History</button>
-      </div>
-      <div className='Map'>
-        <div ref='map' id="map" style={mapStyle}>Map</div>
-      </div>
+        <div id="buttons">
+          <button id="clear" >Clear</button>
+          <button id="route">Find best route</button>
+          <button id="history">History</button>
+        </div>
+        <div className='Map'>
+          <div ref='map' id="map" style={mapStyle}>Map</div>
+        </div>
       </div>
     );
   }
