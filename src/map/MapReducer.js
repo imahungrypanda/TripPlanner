@@ -24,7 +24,7 @@ const MapReducer = (state = defaultState, action) => {
       return newState;
 
     case CLEAR:
-      newState.history.push(newState.markers);
+      newState.history.unshift(newState.markers);
       newState.markers = [];
 
       return newState;

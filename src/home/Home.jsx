@@ -5,7 +5,7 @@ import Buttons from '../buttons/ButtonsContainer';
 const Home = () => {
   return(
     <div >
-      <Buttons />
+
       <Map />
     </div>
   );

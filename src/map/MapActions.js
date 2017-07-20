@@ -13,7 +13,7 @@ export const addMarker = coords => dispatch => {
 }
 
 export const clearMarkers = () => dispatch => {
-  dispatch(clear());
+  dispatch(deleteMarkers());
 }
 
 export const updateLocation = coords => ({
@@ -26,6 +26,6 @@ export const pushMarker = coords => ({
   coords
 });
 
-export const clear = () => ({
+export const deleteMarkers = () => ({
   type: CLEAR
 });

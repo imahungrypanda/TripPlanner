@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 import Buttons from '../buttons/ButtonsContainer';
+import "./Buttons.css";
 
 class Map extends Component {
   constructor(props){
@@ -15,7 +16,6 @@ class Map extends Component {
   }
 
   componentDidMount(){
-    console.log(this.props);
     const mapDOMNode = ReactDOM.findDOMNode(this.refs.map);
 
     let mapOptions = {
@@ -26,6 +26,11 @@ class Map extends Component {
     this.map.addListener("click", e => {
       this.placeMarker(e.latLng);
     });
+
+    document.getElementById('clear').addEventListener("click", e => {
+      e.preventDefault();
+      this.clearMarkers();
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,9 +38,6 @@ class Map extends Component {
     if (this.props.coords !== nextProps.coords) {
       let center = new google.maps.LatLng(nextProps.coords.lat, nextProps.coords.lng);
       this.map.panTo(center);
-    }
-    if (nextProps.clear && !this.props.clear) {
-      this.clearMarkers();
     }
   }
 
@@ -48,7 +50,8 @@ class Map extends Component {
   }
 
   clearMarkers() {
-    this.props.markers.forEach(marker => console.log(marker));
+    this.props.clearMarkers();
+    this.props.clear.forEach(marker => marker.setMap(null));
   }
 
   render() {
@@ -58,9 +61,15 @@ class Map extends Component {
     };
 
     return (
+      <div>
+            <div id="buttons">
+        <button id="clear" >Clear</button>
+        <button id="route">Find best route</button>
+        <button id="history">History</button>
+      </div>
       <div className='Map'>
-
         <div ref='map' id="map" style={mapStyle}>Map</div>
+      </div>
       </div>
     );
   }
