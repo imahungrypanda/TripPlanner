@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 import "./Buttons.css";
-import { createGraph } from './MapUtil';
 
 class Map extends Component {
   constructor(props){
@@ -30,6 +29,7 @@ class Map extends Component {
 
     document.getElementById('clear').addEventListener("click", e => {
       e.preventDefault();
+      this.directionsDisplay.setMap(null);
       this.clearMarkers();
     });
 
@@ -48,8 +48,11 @@ class Map extends Component {
         optimizeWaypoints: true,
         travelMode: google.maps.TravelMode.DRIVING,
         unitSystem: google.maps.UnitSystem.IMPERIAL
-      }, function(response, status) {
+      }, callback.bind(this));
+
+      function callback(response, status) {
         if (status === "OK") {
+          this.clearMarkers();
           response.routes[0].legs = response.routes[0].legs.filter(leg => leg.distance.value > 0);
         // response.routes[0].legs.forEach(leg => console.log("Start: ", leg.start_address, "  End: ", leg.end_address))
           this.directionsDisplay.setDirections(response);
@@ -57,7 +60,7 @@ class Map extends Component {
         else {
           window.alert('Directions request failed due to ' + status);
         }
-      });
+      }
     });
 
     document.getElementById('history').addEventListener("click", e => {
@@ -86,7 +89,7 @@ class Map extends Component {
   clearMarkers() {
     this.props.clearMarkers();
     this.props.clear.forEach(marker => marker.setMap(null));
-    this.directionsDisplay.setMap(null);
+
   }
 
   render() {
