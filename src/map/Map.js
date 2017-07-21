@@ -35,11 +35,17 @@ class Map extends Component {
 
     document.getElementById('route').addEventListener("click", e => {
       e.preventDefault();
-
-      if (Object.keys(this.props.coords).length === 0) {}
+      if (Object.keys(this.props.nodes).length === 0) {
+        window.alert("Please add a few pins first");
+        return ;
+      }
+      else if (Object.keys(this.props.coords).length === 0) {
+        window.alert("Please enable location");
+        return ;
+      }
 
       let directions = new google.maps.DirectionsService();
-      this.directionsDisplay.setMap(this.map);
+
 
       directions.route({
         origin: this.props.coords,
@@ -54,7 +60,7 @@ class Map extends Component {
         if (status === "OK") {
           this.clearMarkers();
           response.routes[0].legs = response.routes[0].legs.filter(leg => leg.distance.value > 0);
-        // response.routes[0].legs.forEach(leg => console.log("Start: ", leg.start_address, "  End: ", leg.end_address))
+          this.directionsDisplay.setMap(this.map);
           this.directionsDisplay.setDirections(response);
         }
         else {
@@ -71,8 +77,7 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log(nextProps)
-    if (this.props.coords !== nextProps.coords) {
+    if (!this.props.coords) {
       let center = new google.maps.LatLng(nextProps.coords.lat, nextProps.coords.lng);
       this.map.panTo(center);
     }
@@ -89,7 +94,6 @@ class Map extends Component {
   clearMarkers() {
     this.props.clearMarkers();
     this.props.clear.forEach(marker => marker.setMap(null));
-
   }
 
   render() {
@@ -98,7 +102,6 @@ class Map extends Component {
       height: window.innerHeight
     };
 
-    // TODO add div for errors
     // TODO add div for time of the best route
     return (
       <div>

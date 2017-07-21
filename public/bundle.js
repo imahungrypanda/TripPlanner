@@ -28281,11 +28281,15 @@ var Map = function (_Component) {
 
       document.getElementById('route').addEventListener("click", function (e) {
         e.preventDefault();
-
-        if (Object.keys(_this2.props.coords).length === 0) {}
+        if (Object.keys(_this2.props.nodes).length === 0) {
+          window.alert("Please add a few pins first");
+          return;
+        } else if (Object.keys(_this2.props.coords).length === 0) {
+          window.alert("Please enable location");
+          return;
+        }
 
         var directions = new google.maps.DirectionsService();
-        _this2.directionsDisplay.setMap(_this2.map);
 
         directions.route({
           origin: _this2.props.coords,
@@ -28304,7 +28308,7 @@ var Map = function (_Component) {
             response.routes[0].legs = response.routes[0].legs.filter(function (leg) {
               return leg.distance.value > 0;
             });
-            // response.routes[0].legs.forEach(leg => console.log("Start: ", leg.start_address, "  End: ", leg.end_address))
+            this.directionsDisplay.setMap(this.map);
             this.directionsDisplay.setDirections(response);
           } else {
             window.alert('Directions request failed due to ' + status);
@@ -28321,8 +28325,7 @@ var Map = function (_Component) {
   }, {
     key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
-      // console.log(nextProps)
-      if (this.props.coords !== nextProps.coords) {
+      if (!this.props.coords) {
         var center = new google.maps.LatLng(nextProps.coords.lat, nextProps.coords.lng);
         this.map.panTo(center);
       }
@@ -28352,7 +28355,6 @@ var Map = function (_Component) {
         height: window.innerHeight
       };
 
-      // TODO add div for errors
       // TODO add div for time of the best route
       return _react2.default.createElement(
         'div',
