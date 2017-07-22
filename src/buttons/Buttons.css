@@ -6,9 +6,37 @@
 }
 
 button {
-  margin: 0 5px;
+  font-size: 11px;
+  padding: 8px;
+  color: rgb(86, 86, 86);
+  font-family: Roboto, Arial, sans-serif;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid lightgray;
 }
 
-button:hover {
+button:hover, p:hover {
   cursor: pointer;
 }
+
+#route {
+  border-left: none;
+  border-right: none;
+}
+
+ul {
+  padding: 15px;
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+li {
+  cursor: pointer;
+  list-style: none;
+  padding: 5px;
+}
+
+p {
+  margin: 0px;
+  text-align: right;
+}
+

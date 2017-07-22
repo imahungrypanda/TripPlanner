@@ -27535,14 +27535,9 @@ var _MapActions = __webpack_require__(68);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// import { parseMarkers, parseHistoryName } from './MapUtil';
-
 var mapStateToProps = function mapStateToProps(state) {
   return {
     coords: state.map.coords
-    // markers: state.map.markers,
-    // nodes: parseMarkers(state.map.markers),
-    // history: state.map.history
   };
 };
 
@@ -27551,7 +27546,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
     findLocation: function findLocation() {
       return dispatch((0, _MapActions.findLocation)());
     },
-
     addMarker: function addMarker(coords) {
       return dispatch((0, _MapActions.addMarker)(coords));
     }
@@ -27559,10 +27553,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Map2.default);
-
-// addHistory: history => dispatch(addHistory(history)),
-// clearMarkers: () => dispatch(clearMarkers()),
-// getHistoryName: legs => parseHistoryName(legs)
 
 /***/ }),
 /* 319 */
@@ -27779,10 +27769,11 @@ var Buttons = function (_Component) {
       modal: false
     };
 
-    _this.createHistory = _this.createHistory.bind(_this);
-    _this.clearMarkers = _this.clearMarkers.bind(_this);
     _this.clearMap = _this.clearMap.bind(_this);
+    _this.clearMarkers = _this.clearMarkers.bind(_this);
+    _this.createHistory = _this.createHistory.bind(_this);
     _this.flipModal = _this.flipModal.bind(_this);
+    _this.getDirections = _this.getDirections.bind(_this);
     return _this;
   }
 
@@ -27807,65 +27798,13 @@ var Buttons = function (_Component) {
           return;
         }
 
-        var directions = new google.maps.DirectionsService();
-
-        directions.route({
-          origin: _this2.props.coords,
-          destination: _this2.props.coords,
-          waypoints: _this2.props.nodes.map(function (node) {
-            return { location: node, stopover: true };
-          }),
-          optimizeWaypoints: true,
-          travelMode: google.maps.TravelMode.DRIVING,
-          unitSystem: google.maps.UnitSystem.IMPERIAL
-        }, callback.bind(_this2));
-
-        function callback(response, status) {
-          if (status === "OK") {
-            var history = {};
-
-            response.routes[0].legs = response.routes[0].legs.filter(function (leg) {
-              return leg.distance.value > 0;
-            });
-            history.name = this.props.getHistoryName(response.routes[0].legs);
-            history.markers = this.props.markers;
-
-            this.props.addHistory(history);
-            this.clearMarkers();
-
-            this.props.directionsDisplay.setMap(this.props.map);
-            this.props.directionsDisplay.setDirections(response);
-          } else {
-            window.alert('Directions request failed due to ' + status);
-          }
-        }
+        _this2.getDirections();
       });
 
       document.getElementById('history').addEventListener("click", function (e) {
         e.preventDefault();
         _this2.flipModal();
       });
-    }
-  }, {
-    key: 'flipModal',
-    value: function flipModal() {
-      this.setState({ modal: !this.state.modal });
-    }
-  }, {
-    key: 'clearMap',
-    value: function clearMap() {
-      this.props.directionsDisplay.setMap(null);
-    }
-  }, {
-    key: 'clearMarkers',
-    value: function clearMarkers() {
-      if (this.props.markers.length === 0) {
-        return;
-      }
-      this.props.markers.forEach(function (marker) {
-        return marker.setMap(null);
-      });
-      this.props.clearMarkers();
     }
   }, {
     key: 'createHistory',
@@ -27897,8 +27836,67 @@ var Buttons = function (_Component) {
       });
     }
   }, {
+    key: 'clearMap',
+    value: function clearMap() {
+      this.props.directionsDisplay.setMap(null);
+    }
+  }, {
+    key: 'clearMarkers',
+    value: function clearMarkers() {
+      if (this.props.markers.length === 0) {
+        return;
+      }
+      this.props.markers.forEach(function (marker) {
+        return marker.setMap(null);
+      });
+      this.props.clearMarkers();
+    }
+  }, {
+    key: 'flipModal',
+    value: function flipModal() {
+      this.setState({ modal: !this.state.modal });
+    }
+  }, {
+    key: 'getDirections',
+    value: function getDirections() {
+      var directions = new google.maps.DirectionsService();
+
+      directions.route({
+        origin: this.props.coords,
+        destination: this.props.coords,
+        waypoints: this.props.nodes.map(function (node) {
+          return { location: node, stopover: true };
+        }),
+        optimizeWaypoints: true,
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.IMPERIAL
+      }, callback.bind(this));
+
+      function callback(response, status) {
+        if (status === "OK") {
+          var history = {};
+
+          response.routes[0].legs = response.routes[0].legs.filter(function (leg) {
+            return leg.distance.value > 0;
+          });
+          history.name = this.props.getHistoryName(response.routes[0].legs);
+          history.markers = this.props.markers;
+
+          this.props.addHistory(history);
+          this.clearMarkers();
+
+          this.props.directionsDisplay.setMap(this.props.map);
+          this.props.directionsDisplay.setDirections(response);
+        } else {
+          window.alert('Directions request failed due to ' + status);
+        }
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this4 = this;
+
       return _react2.default.createElement(
         'div',
         { id: 'buttons' },
@@ -27910,7 +27908,7 @@ var Buttons = function (_Component) {
         _react2.default.createElement(
           'button',
           { id: 'route' },
-          'Find best route'
+          'Find Best Route'
         ),
         _react2.default.createElement(
           'button',
@@ -27924,6 +27922,13 @@ var Buttons = function (_Component) {
             style: _modalStyle.modalStyle,
             className: 'history-modal',
             onRequestClose: this.flipModal },
+          _react2.default.createElement(
+            'p',
+            { onClick: function onClick() {
+                return _this4.flipModal();
+              } },
+            'x'
+          ),
           _react2.default.createElement(
             'ul',
             null,
@@ -28884,7 +28889,7 @@ exports = module.exports = __webpack_require__(69)(undefined);
 
 
 // module
-exports.push([module.i, "#buttons{\n  position: absolute;\n  z-index: 100;\n  right:  10px;\n  padding: 10px;\n}\n\nbutton {\n  margin: 0 5px;\n}\n\nbutton:hover {\n  cursor: pointer;\n}", ""]);
+exports.push([module.i, "#buttons{\n  position: absolute;\n  z-index: 100;\n  right:  10px;\n  padding: 10px;\n}\n\nbutton {\n  font-size: 11px;\n  padding: 8px;\n  color: rgb(86, 86, 86);\n  font-family: Roboto, Arial, sans-serif;\n  background-color: rgb(255, 255, 255);\n  border: 1px solid lightgray;\n}\n\nbutton:hover, p:hover {\n  cursor: pointer;\n}\n\n#route {\n  border-left: none;\n  border-right: none;\n}\n\nul {\n  padding: 15px;\n  max-height: 400px;\n  overflow-y: scroll;\n}\n\nli {\n  cursor: pointer;\n  list-style: none;\n  padding: 5px;\n}\n\np {\n  margin: 0px;\n  text-align: right;\n}\n\n", ""]);
 
 // exports
 
@@ -28955,7 +28960,7 @@ exports = module.exports = __webpack_require__(69)(undefined);
 
 
 // module
-exports.push([module.i, "li {\n  cursor: pointer;\n  list-style: none;\n}", ""]);
+exports.push([module.i, "", ""]);
 
 // exports
 
