@@ -2,8 +2,7 @@ import merge from 'lodash/merge';
 import { UPDATELOCATION, SETMARKERS, ADDMARKER, ADDHISTORY, CLEAR } from './MapActions';
 
 const defaultState = {
-  lat: 37.7749,
-  lng: -122.4149,
+  coords:  {},
   markers: [],
   history: []
 }

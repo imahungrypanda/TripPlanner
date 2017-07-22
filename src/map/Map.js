@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import "./Buttons.css";
+import "./Map.css";
 
 const modalStyle = {
   overlay : {
@@ -27,6 +28,7 @@ class Map extends Component {
 
     this.placeMarker = this.placeMarker.bind(this);
     this.clearMarkers = this.clearMarkers.bind(this);
+    this.clearMap = this.clearMap.bind(this);
     this.flipModal = this.flipModal.bind(this);
   }
 
@@ -38,18 +40,24 @@ class Map extends Component {
     const mapDOMNode = ReactDOM.findDOMNode(this.refs.map);
 
     let mapOptions = {
-      center: {lat: 37.7749, lng: -122.4149},
+      center: {lat: 37.7749, lng: -122.4149}, // Centered on SF, CA
       zoom: 12
     };
     this.map = new google.maps.Map(mapDOMNode, mapOptions);
+    this.directionsDisplay = new google.maps.DirectionsRenderer();
+
     this.map.addListener("click", e => {
+      if (this.props.markers.length === 0) {
+        this.clearMap();
+      }
       this.placeMarker(e.latLng);
     });
-      this.directionsDisplay = new google.maps.DirectionsRenderer();
+
 
     document.getElementById('clear').addEventListener("click", e => {
       e.preventDefault();
-      this.directionsDisplay.setMap(null);
+      // TODO Doesn't work after setting from history
+      this.clearMap();
       this.clearMarkers();
     });
 
@@ -65,7 +73,6 @@ class Map extends Component {
       }
 
       let directions = new google.maps.DirectionsService();
-
 
       directions.route({
         origin: this.props.coords,
@@ -99,15 +106,14 @@ class Map extends Component {
 
     document.getElementById('history').addEventListener("click", e => {
       e.preventDefault();
-      // NOTE maybe have this be a modal that appears?
       console.log("history");
       console.log(this.props.history);
-      // this.flipModal();
+      this.flipModal();
     });
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.coords) {
+    if (Object.keys(this.props.coords).length === 0 && Object.keys(nextProps.coords).length > 0) {
       let center = new google.maps.LatLng(nextProps.coords.lat, nextProps.coords.lng);
       this.map.panTo(center);
     }
@@ -125,9 +131,35 @@ class Map extends Component {
     this.props.addMarker(marker);
   }
 
+  clearMap() {
+    this.directionsDisplay.setMap(null);
+  }
+
   clearMarkers() {
+    if (this.props.markers.length === 0) { return; }
     this.props.markers.forEach(marker => marker.setMap(null));
     this.props.clearMarkers();
+  }
+
+  createHistory() {
+    if (this.props.history.length === 0) {
+      return (<li>No routes have been found</li>);
+    }
+
+    return this.props.history.map((route, i) => {
+      return (
+        <li key={ i } onClick={ () => {
+            this.flipModal();
+            this.clearMap();
+            this.clearMarkers();
+            this.props.setMarkers(route.markers);
+            route.markers.forEach(marker => marker.setMap(this.map));
+          } }>
+          { route.name }
+        </li>
+      );
+    });
+
   }
 
   render() {
@@ -154,7 +186,7 @@ class Map extends Component {
         className="history-modal"
         onRequestClose={this.flipModal} >
           <ul>
-            { "test" }
+            { this.createHistory() }
           </ul>
         </Modal >
       </div>

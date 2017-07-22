@@ -16,7 +16,6 @@ const mapDispatchToProps = dispatch => ({
   addMarker: coords => dispatch(addMarker(coords)),
   addHistory: history => dispatch(addHistory(history)),
   clearMarkers: () => dispatch(clearMarkers()),
-  createGraph: routes => dispatch(createGraph(routes)),
   getHistoryName: legs => parseHistoryName(legs)
 });
 

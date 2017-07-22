@@ -11,3 +11,5 @@ Trip Planner is a react/google maps based web app that finds the users current l
 - [ ] store history to the browser using localStorage for continuous history
 - [ ] undo button
 - [ ] option to set start and end points
+- [ ] allow for a route to be added to once it has been found
+- [ ] instruction modal when page first loads
