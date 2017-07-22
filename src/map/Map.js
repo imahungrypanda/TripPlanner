@@ -1,13 +1,33 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
 import "./Buttons.css";
+
+const modalStyle = {
+  overlay : {
+    position          : 'fixed',
+    top               : 0,
+    left              : 0,
+    right             : 0,
+    bottom            : 0,
+    backgroundColor   : 'rgba(255, 255, 255, 0.75)',
+    display           : 'flex',
+    justifyContent    : 'center',
+    alignItems        : 'center'
+  }
+};
 
 class Map extends Component {
   constructor(props){
     super(props);
 
+    this.state = {
+      modal: false
+    };
+
     this.placeMarker = this.placeMarker.bind(this);
     this.clearMarkers = this.clearMarkers.bind(this);
+    this.flipModal = this.flipModal.bind(this);
   }
 
   componentWillMount() {
@@ -58,8 +78,16 @@ class Map extends Component {
 
       function callback(response, status) {
         if (status === "OK") {
-          this.clearMarkers();
+          let history = {};
+
           response.routes[0].legs = response.routes[0].legs.filter(leg => leg.distance.value > 0);
+          history.name = this.props.getHistoryName(response.routes[0].legs);
+          history.response = response;
+          history.markers = this.props.markers;
+
+          this.props.addHistory(history);
+          this.clearMarkers();
+
           this.directionsDisplay.setMap(this.map);
           this.directionsDisplay.setDirections(response);
         }
@@ -73,6 +101,8 @@ class Map extends Component {
       e.preventDefault();
       // NOTE maybe have this be a modal that appears?
       console.log("history");
+      console.log(this.props.history);
+      // this.flipModal();
     });
   }
 
@@ -81,6 +111,10 @@ class Map extends Component {
       let center = new google.maps.LatLng(nextProps.coords.lat, nextProps.coords.lng);
       this.map.panTo(center);
     }
+  }
+
+  flipModal() {
+    this.setState({ modal: !this.state.modal });
   }
 
   placeMarker(coords) {
@@ -92,8 +126,8 @@ class Map extends Component {
   }
 
   clearMarkers() {
+    this.props.markers.forEach(marker => marker.setMap(null));
     this.props.clearMarkers();
-    this.props.clear.forEach(marker => marker.setMap(null));
   }
 
   render() {
@@ -113,6 +147,16 @@ class Map extends Component {
         <div className='Map'>
           <div ref='map' id="map" style={mapStyle}>Map</div>
         </div>
+        <Modal
+        isOpen={this.state.modal}
+        contentLabel="Modal"
+        style={modalStyle}
+        className="history-modal"
+        onRequestClose={this.flipModal} >
+          <ul>
+            { "test" }
+          </ul>
+        </Modal >
       </div>
     );
   }

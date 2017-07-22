@@ -1,13 +1,13 @@
-import { Graph } from 'graphlib';
-
 export const parseMarkers = markers => {
   return markers.map(marker => {
     return { lat: marker.position.lat(), lng: marker.position.lng() }
     });
 };
 
+export const parseHistoryName = legs => {
+  let name = [];
 
-export const createGraph = routes => {
-  let g = new Graph();
-  console.log("createGraph: ", routes);
+  legs.forEach(leg => name.push(leg.start_address.split(",")[0]));
+
+  return name.join(" - ");
 };
