@@ -27669,7 +27669,6 @@ var Map = function (_Component) {
 
       document.getElementById('clear').addEventListener("click", function (e) {
         e.preventDefault();
-        // TODO Doesn't work after setting from history
         _this2.clearMap();
         _this2.clearMarkers();
       });
@@ -27705,7 +27704,6 @@ var Map = function (_Component) {
               return leg.distance.value > 0;
             });
             history.name = this.props.getHistoryName(response.routes[0].legs);
-            history.response = response;
             history.markers = this.props.markers;
 
             this.props.addHistory(history);
@@ -27721,8 +27719,6 @@ var Map = function (_Component) {
 
       document.getElementById('history').addEventListener("click", function (e) {
         e.preventDefault();
-        console.log("history");
-        console.log(_this2.props.history);
         _this2.flipModal();
       });
     }

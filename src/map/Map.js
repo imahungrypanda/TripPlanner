@@ -56,7 +56,6 @@ class Map extends Component {
 
     document.getElementById('clear').addEventListener("click", e => {
       e.preventDefault();
-      // TODO Doesn't work after setting from history
       this.clearMap();
       this.clearMarkers();
     });
@@ -89,7 +88,6 @@ class Map extends Component {
 
           response.routes[0].legs = response.routes[0].legs.filter(leg => leg.distance.value > 0);
           history.name = this.props.getHistoryName(response.routes[0].legs);
-          history.response = response;
           history.markers = this.props.markers;
 
           this.props.addHistory(history);
@@ -106,8 +104,6 @@ class Map extends Component {
 
     document.getElementById('history').addEventListener("click", e => {
       e.preventDefault();
-      console.log("history");
-      console.log(this.props.history);
       this.flipModal();
     });
   }
