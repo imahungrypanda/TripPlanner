@@ -58,7 +58,6 @@ class Map extends Component {
         <div className='Map'>
           <div ref='map' id="map" style={mapStyle}>Map</div>
         </div>
-
       </div>
     );
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import configureStore from './util/store';
 import './index.css';
-import Home from './home/Home';
+import Map from './map/MapContainer';
 import { Provider } from 'react-redux';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const Root = ({store}) => (
     <Provider store={ store }>
-      <Home />
+      <Map />
     </Provider>
   );
 
