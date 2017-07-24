@@ -1,8 +1,8 @@
-export const UPDATELOCATION = "UPDATELOCATION";
-export const SETMARKERS = "SETMARKERS";
-export const ADDMARKER = "ADDMARKER";
+export const UPDATE_LOCATION = "UPDATE_LOCATION";
+export const SET_MARKERS = "SET_MARKERS";
+export const ADD_MARKER = "ADD_MARKER";
 export const CLEAR = "CLEAR";
-export const ADDHISTORY = "ADDHISTORY";
+export const ADD_HISTORY = "ADD_HISTORY";
 
 export const findLocation = () => dispatch =>{
   navigator.geolocation.getCurrentPosition((position) => {
@@ -27,22 +27,22 @@ export const clearMarkers = () => dispatch => {
 };
 
 export const updateLocation = coords => ({
-  type: UPDATELOCATION,
+  type: UPDATE_LOCATION,
   coords
 });
 
 export const addMarkers = markers => ({
-  type: SETMARKERS,
+  type: SET_MARKERS,
   markers
 });
 
 export const pushMarker = coords => ({
-  type: ADDMARKER,
+  type: ADD_MARKER,
   coords
 });
 
 export const pushHistory = history => ({
-  type: ADDHISTORY,
+  type: ADD_HISTORY,
   history
 });
 

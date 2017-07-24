@@ -7098,11 +7098,11 @@ module.exports = isArrayLike;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var UPDATELOCATION = exports.UPDATELOCATION = "UPDATELOCATION";
-var SETMARKERS = exports.SETMARKERS = "SETMARKERS";
-var ADDMARKER = exports.ADDMARKER = "ADDMARKER";
+var UPDATE_LOCATION = exports.UPDATE_LOCATION = "UPDATE_LOCATION";
+var SET_MARKERS = exports.SET_MARKERS = "SET_MARKERS";
+var ADD_MARKER = exports.ADD_MARKER = "ADD_MARKER";
 var CLEAR = exports.CLEAR = "CLEAR";
-var ADDHISTORY = exports.ADDHISTORY = "ADDHISTORY";
+var ADD_HISTORY = exports.ADD_HISTORY = "ADD_HISTORY";
 
 var findLocation = exports.findLocation = function findLocation() {
   return function (dispatch) {
@@ -7138,28 +7138,28 @@ var clearMarkers = exports.clearMarkers = function clearMarkers() {
 
 var updateLocation = exports.updateLocation = function updateLocation(coords) {
   return {
-    type: UPDATELOCATION,
+    type: UPDATE_LOCATION,
     coords: coords
   };
 };
 
 var addMarkers = exports.addMarkers = function addMarkers(markers) {
   return {
-    type: SETMARKERS,
+    type: SET_MARKERS,
     markers: markers
   };
 };
 
 var pushMarker = exports.pushMarker = function pushMarker(coords) {
   return {
-    type: ADDMARKER,
+    type: ADD_MARKER,
     coords: coords
   };
 };
 
 var pushHistory = exports.pushHistory = function pushHistory(history) {
   return {
-    type: ADDHISTORY,
+    type: ADD_HISTORY,
     history: history
   };
 };
@@ -25157,22 +25157,22 @@ var MapReducer = function MapReducer() {
   var newState = (0, _merge2.default)({}, state);
 
   switch (action.type) {
-    case _MapActions.UPDATELOCATION:
-      newState.coords = { lng: action.coords.longitude, lat: action.coords.latitude };
+    case _MapActions.UPDATE_LOCATION:
+      newState.coords = { lat: action.coords.latitude, lng: action.coords.longitude };
 
       return newState;
 
-    case _MapActions.SETMARKERS:
+    case _MapActions.SET_MARKERS:
       newState.markers = action.markers;
 
       return newState;
 
-    case _MapActions.ADDMARKER:
+    case _MapActions.ADD_MARKER:
       newState.markers.push(action.coords);
 
       return newState;
 
-    case _MapActions.ADDHISTORY:
+    case _MapActions.ADD_HISTORY:
       newState.history.unshift(action.history);
 
       return newState;
