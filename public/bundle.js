@@ -27714,7 +27714,7 @@ var _reactModal = __webpack_require__(321);
 
 var _reactModal2 = _interopRequireDefault(_reactModal);
 
-var _modalStyle = __webpack_require__(329);
+var _ModalStyle = __webpack_require__(329);
 
 __webpack_require__(330);
 
@@ -27888,7 +27888,7 @@ var Buttons = function (_Component) {
           _reactModal2.default,
           { isOpen: this.state.modal,
             contentLabel: 'Modal',
-            style: _modalStyle.modalStyle,
+            style: _ModalStyle.modalStyle,
             className: 'history-modal',
             onRequestClose: this.flipModal },
           _react2.default.createElement(

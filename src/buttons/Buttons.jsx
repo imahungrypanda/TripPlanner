@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Modal from 'react-modal';
-import { modalStyle } from './modalStyle';
+import { modalStyle } from './ModalStyle';
 import './Buttons.css';
 
 class Buttons extends Component {
