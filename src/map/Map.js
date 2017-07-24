@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Modal from 'react-modal';
+import { modalStyle } from '../buttons/ModalStyle';
 import Buttons from '../buttons/ButtonsContainer';
 import "./Map.css";
 
@@ -7,7 +9,12 @@ class Map extends Component {
   constructor(props){
     super(props);
 
+    this.state = {
+      modal: true
+    };
+
     this.placeMarker = this.placeMarker.bind(this);
+    this.flipModal = this.flipModal.bind(this);
   }
 
   componentWillMount() {
@@ -45,6 +52,10 @@ class Map extends Component {
     this.props.addMarker(marker);
   }
 
+  flipModal() {
+    this.setState({ modal: !this.state.modal });
+  }
+
   render() {
     const mapStyle = {
       width: window.innerWidth,
@@ -58,6 +69,16 @@ class Map extends Component {
         <div className='Map'>
           <div ref='map' id="map" style={mapStyle}>Map</div>
         </div>
+        <Modal isOpen={this.state.modal}
+        contentLabel="Modal"
+        style={ modalStyle }
+        className="instruction-modal"
+        onRequestClose={ this.flipModal } >
+          <div style={ {width: '500px', textAlign: 'center', padding: '10px', background: 'white' } }>
+            <h3>Welcome to Trip Planner!</h3>
+            <p style={ { textAlign: 'justify' } }>To began place a few markers on the map, then when ready click Find Best Route to find the optimal route from your current location to all the waypoints ending back at your current location.</p>
+          </div>
+        </Modal >
       </div>
     );
   }

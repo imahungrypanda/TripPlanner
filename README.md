@@ -3,7 +3,7 @@
 ![screenshot](screenshots/marker-demo.png)
 
 
-Trip Planner is a react/google maps based web-app that finds the user’s current location and allows the user to drop several markers/pins down. Once a few markers are down it becomes possible to find the best route based on time between the markers. Once a route has been found it is added to the history so that a user can go back and either run the route again or add more markers to the route. The user also has the ability to clear the route to start a new one.
+Trip Planner is a react/google maps api based web-app that finds the user’s current location and allows the user to drop several markers/pins down. Once a few markers are down it becomes possible to find the best route starting and ending from the current location to all the markers based on time. Once a route has been found it is added to the history so that a user can go back and either run the route again or add more markers to the route. The user also has the ability to clear the route to start a new one.
 
 ### Features
 Upon allowing access to location, a call to find the browsers location is made. When the location has been found the map pans to center over the new location. By default the map centers to San Francisco.
@@ -64,7 +64,7 @@ After dropping several markers, clicking the `Find Best Route` button sends off 
 `History` stores all the markers of routes that have been found for fast look up of old routes. When an old route has been selected the map is cleared then the old markers appear again. They can be added to or the route can be found again by clicking the `Find Best Route` button.
 
 ### Future Plans:
-- [ ] instruction modal when page first loads
+- [x] instruction modal when page first loads
 - [ ] option to set start and end points
 - [ ] store history to the browser using localStorage for continuous history
 - [ ] undo button
