@@ -96,7 +96,6 @@ class Buttons extends Component {
         let history = {};
 
         response.routes[0].legs = response.routes[0].legs.filter(leg => leg.distance.value > 0);
-        console.log(response.routes);
         history.name = this.props.getHistoryName(response.routes[0].legs);
         history.markers = this.props.markers;
 
