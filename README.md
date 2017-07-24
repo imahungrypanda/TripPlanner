@@ -1,6 +1,7 @@
-# Trip Planner
+# Trip Planner ![Build Status](https://travis-ci.org/imahungrypanda/TripPlanner.svg?branch=master)
 
-![screenshot](map-demo.gif)
+![screenshot](screenshots/marker-demo.png)
+
 
 Trip Planner is a react/google maps based web-app that finds the user’s current location and allows the user to drop several markers/pins down. Once a few markers are down it becomes possible to find the best route based on time between the markers. Once a route has been found it is added to the history so that a user can go back and either run the route again or add more markers to the route. The user also has the ability to clear the route to start a new one.
 
@@ -18,6 +19,8 @@ Upon allowing access to location, a call to find the browsers location is made. 
     }
   }
 ```
+
+![screenshot](screenshots/route-demo.png)
 
 After dropping several markers, clicking the `Find Best Route` button sends off the call to Google Maps Direction Service to find the best route between the current location and all the markers that have been placed. All markers become way points that have the `stopover` property set to true which allows Direction Service to know it has to passover each one. Once the response comes back it is filtered to make sure there are not any legs of the route passing through itself. [Read](https://developers.google.com/optimization/routing/tsp/tsp) more about how Google solves the traveling salesman problem.
 
