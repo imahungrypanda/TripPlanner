@@ -2,17 +2,17 @@
 language: node_js
 node_js:
   - 6
-  - 8
+
 cache:
   directories:
   - node_modules
-  - packages/create-react-app/node_modules
-  - packages/react-scripts/node_modules
+
 install: true
+
 script:
- - npm install
  - npm run test
  - npm run build
+
 env:
   global:
     - USE_YARN=no
