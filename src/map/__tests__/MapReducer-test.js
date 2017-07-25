@@ -8,6 +8,8 @@ describe('MapReducer', () => {
 
   it('should initialize to the default state', () => {
     const defaultState = {
+      start: {},
+      end: {},
       coords:  {},
       markers: [],
       history: []
@@ -54,6 +56,26 @@ describe('MapReducer', () => {
       ];
       const newState = MapReducer(undefined, { type: 'SET_MARKERS', markers });
       expect(newState.markers).toEqual(markers);
+    });
+  });
+
+  describe('handling SET_START action', () => {
+    it('should assign start to the value of the marker', () => {
+      const marker = {
+        position: { lat: 29.4241, lng: 98.4936   }
+      };
+      const newState = MapReducer(undefined, { type: 'SET_START', marker });
+      expect(newState.start).toEqual(marker);
+    });
+  });
+
+  describe('handling SET_END action', () => {
+    it('should assign end to the value of the marker', () => {
+      const marker = {
+        position: { lat: 29.4241, lng: 98.4936   }
+      };
+      const newState = MapReducer(undefined, { type: 'SET_END', marker });
+      expect(newState.end).toEqual(marker);
     });
   });
 
