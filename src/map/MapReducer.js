@@ -33,10 +33,17 @@ const MapReducer = (state = defaultState, action) => {
         newState.start.set    = !newState.start.set;
         newState.start.coords = action.marker;
       }
+
       return newState;
 
     case SET_END:
-      newState.end = action.marker;
+      if (_.isEmpty(action.marker)) {
+        newState.end.set    = !newState.end.set;
+      }
+      else {
+        newState.end.set    = !newState.end.set;
+        newState.end.coords = action.marker;
+      }
 
       return newState;
 

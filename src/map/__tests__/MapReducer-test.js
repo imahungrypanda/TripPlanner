@@ -60,22 +60,48 @@ describe('MapReducer', () => {
   });
 
   describe('handling SET_START action', () => {
+    let marker;
+
+    beforeEach(() => marker = { lat: 29.4241, lng: 98.4936 });
+
     it('should assign start to the value of the marker', () => {
-      const marker = {
-        position: { lat: 29.4241, lng: 98.4936   }
-      };
       const newState = MapReducer(undefined, { type: 'SET_START', marker });
-      expect(newState.start).toEqual(marker);
+      expect(newState.start.coords).toEqual(marker);
+    });
+
+    it('should flip set to true when passed an empty object', () => {
+      const newState = MapReducer(undefined, { type: 'SET_START', marker: {} });
+      expect(newState.start.set).toBe(true);
+    });
+
+    it('should flip set to false when passed an object', () => {
+      let newState = MapReducer(undefined, { type: 'SET_START', marker: {} });
+      expect(newState.start.set).toBe(true);
+      newState = MapReducer(newState, { type: 'SET_START', marker });
+      expect(newState.start.set).toBe(false);
     });
   });
 
   describe('handling SET_END action', () => {
+    let marker;
+
+    beforeEach(() => marker = { lat: 29.4241, lng: 98.4936 });
+
     it('should assign end to the value of the marker', () => {
-      const marker = {
-        position: { lat: 29.4241, lng: 98.4936   }
-      };
       const newState = MapReducer(undefined, { type: 'SET_END', marker });
-      expect(newState.end).toEqual(marker);
+      expect(newState.end.coords).toEqual(marker);
+    });
+
+    it('should flip set to true when passed an empty object', () => {
+      const newState = MapReducer(undefined, { type: 'SET_END', marker: {} });
+      expect(newState.end.set).toBe(true);
+    });
+
+    it('should flip set to false when passed an object', () => {
+      let newState = MapReducer(undefined, { type: 'SET_END', marker: {} });
+      expect(newState.end.set).toBe(true);
+      newState = MapReducer(newState, { type: 'SET_END', marker });
+      expect(newState.end.set).toBe(false);
     });
   });
 
