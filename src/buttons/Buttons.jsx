@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import { modalStyle } from './ModalStyle';
 import './Buttons.css';
+import _ from 'lodash';
 
 class Buttons extends Component {
   constructor(props) {
@@ -19,6 +20,11 @@ class Buttons extends Component {
   }
 
   componentDidMount() {
+    document.getElementById('start').addEventListener("click", e => {
+      this.props.setStart({});
+    });
+    document.getElementById('end').addEventListener("click", e => {});
+
     document.getElementById('clear').addEventListener("click", e => {
       e.preventDefault();
       this.clearMap();
@@ -81,10 +87,13 @@ class Buttons extends Component {
 
   getDirections() {
     let directions = new google.maps.DirectionsService();
+    let origin = _.isEmpty(this.props.start) ? this.props.coords : this.props.start.coords;
+    let destination = _.isEmpty(this.props.end) ? this.props.coords : this.props.end;
 
+console.log(origin)
     directions.route({
-      origin: this.props.coords,
-      destination: this.props.coords,
+      origin: origin,
+      destination: destination,
       waypoints: this.props.nodes.map(node => ({ location: node, stopover: true })),
       optimizeWaypoints: true,
       travelMode: google.maps.TravelMode.DRIVING,
@@ -114,6 +123,8 @@ class Buttons extends Component {
   render() {
     return(
       <div id="buttons">
+        <button id="start" >Set Start</button>
+        <button id="end" >Set End</button>
         <button id="clear" >Clear</button>
 
         <button id="route">Find Best Route</button>

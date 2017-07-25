@@ -49,7 +49,13 @@ class Map extends Component {
       position: coords,
       map: this.map
     });
-    this.props.addMarker(marker);
+
+    if (this.props.start) {
+      this.props.setStart(coords);
+    }
+    else {
+      this.props.addMarker(marker);
+    }
   }
 
   flipModal() {

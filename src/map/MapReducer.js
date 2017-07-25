@@ -1,4 +1,4 @@
-import merge from 'lodash/merge';
+import _ from 'lodash';
 import { UPDATE_LOCATION, SET_MARKERS, SET_START, SET_END,
           ADD_MARKER, ADD_HISTORY, CLEAR } from './MapActions';
 
@@ -12,7 +12,7 @@ const defaultState = {
 
 const MapReducer = (state = defaultState, action) => {
   Object.freeze(state);
-  let newState = merge({}, state);
+  let newState = _.merge({}, state);
 
   switch(action.type){
     case UPDATE_LOCATION:
@@ -26,8 +26,13 @@ const MapReducer = (state = defaultState, action) => {
       return newState;
 
     case SET_START:
-      newState.start = action.marker;
-
+      if (_.isEmpty(action.marker)) {
+        newState.start.set    = !newState.start.set;
+      }
+      else {
+        newState.start.set    = !newState.start.set;
+        newState.start.coords = action.marker;
+      }
       return newState;
 
     case SET_END:
