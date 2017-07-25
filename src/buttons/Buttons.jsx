@@ -115,7 +115,9 @@ class Buttons extends Component {
     return(
       <div id="buttons">
         <button id="clear" >Clear</button>
+
         <button id="route">Find Best Route</button>
+
         <button id="history">History</button>
         <Modal isOpen={this.state.modal}
         contentLabel="Modal"

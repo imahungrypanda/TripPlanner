@@ -1,5 +1,7 @@
 export const UPDATE_LOCATION = "UPDATE_LOCATION";
 export const SET_MARKERS = "SET_MARKERS";
+export const SET_START = "SET_START";
+export const SET_END = "SET_END";
 export const ADD_MARKER = "ADD_MARKER";
 export const CLEAR = "CLEAR";
 export const ADD_HISTORY = "ADD_HISTORY";
@@ -12,6 +14,14 @@ export const findLocation = () => dispatch =>{
 
 export const setMarkers = markers => dispatch => {
   dispatch(addMarkers(markers));
+};
+
+export const setStart = marker => dispatch => {
+  dispatch(addStart(marker));
+};
+
+export const setEnd = marker => dispatch => {
+  dispatch(addEnd(marker));
 };
 
 export const addMarker = coords => dispatch => {
@@ -34,6 +44,16 @@ export const updateLocation = coords => ({
 export const addMarkers = markers => ({
   type: SET_MARKERS,
   markers
+});
+
+export const addStart = marker => ({
+  type: SET_START,
+  marker
+});
+
+export const addEnd = marker => ({
+  type: SET_END,
+  marker
 });
 
 export const pushMarker = coords => ({
