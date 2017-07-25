@@ -62,11 +62,15 @@ describe('MapReducer', () => {
   describe('handling SET_START action', () => {
     let marker;
 
-    beforeEach(() => marker = { lat: 29.4241, lng: 98.4936 });
+    beforeEach(() => marker = {
+      coords: { lat: 37.7749, lng: -122.4149 },
+      marker: { lat: 40.7128, lng: 74.0059   }
+    });
 
-    it('should assign start to the value of the marker', () => {
+    it('should assign start to marker and coords', () => {
       const newState = MapReducer(undefined, { type: 'SET_START', marker });
-      expect(newState.start.coords).toEqual(marker);
+      expect(newState.start.marker).toEqual(marker.marker);
+      expect(newState.start.coords).toEqual(marker.coords);
     });
 
     it('should flip set to true when passed an empty object', () => {
@@ -85,11 +89,15 @@ describe('MapReducer', () => {
   describe('handling SET_END action', () => {
     let marker;
 
-    beforeEach(() => marker = { lat: 29.4241, lng: 98.4936 });
+    beforeEach(() => marker = {
+      coords: { lat: 37.7749, lng: -122.4149 },
+      marker: { lat: 40.7128, lng: 74.0059   }
+    });
 
-    it('should assign end to the value of the marker', () => {
+    it('should assign end to marker and coords', () => {
       const newState = MapReducer(undefined, { type: 'SET_END', marker });
-      expect(newState.end.coords).toEqual(marker);
+      expect(newState.end.marker).toEqual(marker.marker);
+      expect(newState.end.coords).toEqual(marker.coords);
     });
 
     it('should flip set to true when passed an empty object', () => {

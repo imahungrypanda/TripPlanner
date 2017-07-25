@@ -23,7 +23,9 @@ class Buttons extends Component {
     document.getElementById('start').addEventListener("click", e => {
       this.props.setStart({});
     });
-    document.getElementById('end').addEventListener("click", e => {});
+    document.getElementById('end').addEventListener("click", e => {
+      this.props.setEnd({});
+    });
 
     document.getElementById('clear').addEventListener("click", e => {
       e.preventDefault();
@@ -33,11 +35,11 @@ class Buttons extends Component {
 
     document.getElementById('route').addEventListener("click", e => {
       e.preventDefault();
-      if (Object.keys(this.props.nodes).length === 0) {
+      if (_.isEmpty(this.props.nodes)) {
         window.alert("Please add a few pins first");
         return ;
       }
-      else if (Object.keys(this.props.coords).length === 0) {
+      else if (_.isEmpty(this.props.coords)) {
         window.alert("Please enable location");
         return ;
       }
@@ -63,7 +65,11 @@ class Buttons extends Component {
             this.clearMap();
             this.clearMarkers();
             this.props.setMarkers(route.markers);
+            this.props.setStart(route.start);
+            this.props.setEnd(route.end);
             route.markers.forEach(marker => marker.setMap(this.props.map));
+            route.start.marker.setMap(this.props.map);
+            route.end.marker.setMap(this.props.map);
           } }>
           { route.name }
         </li>
@@ -78,6 +84,8 @@ class Buttons extends Component {
   clearMarkers() {
     if (this.props.markers.length === 0) { return; }
     this.props.markers.forEach(marker => marker.setMap(null));
+    this.props.start.marker.setMap(null);
+    this.props.end.marker.setMap(null);
     this.props.clearMarkers();
   }
 
@@ -87,10 +95,9 @@ class Buttons extends Component {
 
   getDirections() {
     let directions = new google.maps.DirectionsService();
-    let origin = _.isEmpty(this.props.start) ? this.props.coords : this.props.start.coords;
-    let destination = _.isEmpty(this.props.end) ? this.props.coords : this.props.end;
+    let origin = _.isEmpty(this.props.start.coords) ? this.props.coords : this.props.start.coords;
+    let destination = _.isEmpty(this.props.end.coords) ? this.props.coords : this.props.end.coords;
 
-console.log(origin)
     directions.route({
       origin: origin,
       destination: destination,
@@ -107,6 +114,8 @@ console.log(origin)
         response.routes[0].legs = response.routes[0].legs.filter(leg => leg.distance.value > 0);
         history.name = this.props.getHistoryName(response.routes[0].legs);
         history.markers = this.props.markers;
+        history.start = this.props.start;
+        history.end = this.props.end;
 
         this.props.addHistory(history);
         this.clearMarkers();

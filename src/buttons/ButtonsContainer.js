@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Buttons from './Buttons';
-import { addHistory, clearMarkers, setMarkers, setStart } from '../map/MapActions';
+import { addHistory, clearMarkers, setMarkers, setStart, setEnd } from '../map/MapActions';
 import { parseMarkers, parseHistoryName } from '../map/MapUtil';
 
 const mapStateToProps = state => ({
@@ -14,6 +14,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   setStart: marker => dispatch(setStart(marker)),
+  setEnd: marker => dispatch(setEnd(marker)),
   setMarkers: markers => dispatch(setMarkers(markers)),
   addHistory: history => dispatch(addHistory(history)),
   clearMarkers: () => dispatch(clearMarkers()),

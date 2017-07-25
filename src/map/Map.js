@@ -51,7 +51,10 @@ class Map extends Component {
     });
 
     if (this.props.start) {
-      this.props.setStart(coords);
+      this.props.setStart({coords, marker});
+    }
+    else if (this.props.end) {
+      this.props.setEnd({coords, marker});
     }
     else {
       this.props.addMarker(marker);

@@ -31,7 +31,7 @@ const MapReducer = (state = defaultState, action) => {
       }
       else {
         newState.start.set    = !newState.start.set;
-        newState.start.coords = action.marker;
+        newState.start = _.merge(newState.start, action.marker);
       }
 
       return newState;
@@ -42,7 +42,7 @@ const MapReducer = (state = defaultState, action) => {
       }
       else {
         newState.end.set    = !newState.end.set;
-        newState.end.coords = action.marker;
+        newState.end = _.merge(newState.end, action.marker);
       }
 
       return newState;
@@ -59,6 +59,8 @@ const MapReducer = (state = defaultState, action) => {
 
     case CLEAR:
       newState.markers = [];
+      newState.start = { set: false };
+      newState.end = { set: false };
 
       return newState;
 
