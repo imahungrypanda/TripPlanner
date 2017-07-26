@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import Modal from 'react-modal';
 import { modalStyle } from '../buttons/ModalStyle';
 import Buttons from '../buttons/ButtonsContainer';
+import _ from 'lodash';
 import "./Map.css";
 
 class Map extends Component {
@@ -38,7 +39,7 @@ class Map extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (Object.keys(this.props.coords).length === 0 && Object.keys(nextProps.coords).length > 0) {
+    if (_.isEmpty(this.props.coords) && !_.isEmpty(nextProps.coords)) {
       let center = new google.maps.LatLng(nextProps.coords.lat, nextProps.coords.lng);
       this.map.panTo(center);
     }

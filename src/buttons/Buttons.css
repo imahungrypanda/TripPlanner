@@ -23,6 +23,11 @@ button:hover, p:hover {
   border-right: none;
 }
 
+#end {
+  border-left: none;
+  border-right: none;
+}
+
 ul {
   padding: 15px;
   max-height: 400px;

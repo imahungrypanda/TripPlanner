@@ -35,7 +35,8 @@ class Buttons extends Component {
 
     document.getElementById('route').addEventListener("click", e => {
       e.preventDefault();
-      if (_.isEmpty(this.props.nodes)) {
+      if (_.isEmpty(this.props.nodes) && _.isEmpty(this.props.coords) &&
+        !(_.isEmpty(this.props.start.coords) && _.isEmpty(this.props.start.coords))) {
         window.alert("Please add a few pins first");
         return ;
       }
@@ -82,10 +83,18 @@ class Buttons extends Component {
   }
 
   clearMarkers() {
-    if (this.props.markers.length === 0) { return; }
-    this.props.markers.forEach(marker => marker.setMap(null));
-    this.props.start.marker.setMap(null);
-    this.props.end.marker.setMap(null);
+    if (this.props.markers.length !== 0) {
+      this.props.markers.forEach(marker => marker.setMap(null));
+    }
+
+    if (this.props.start.hasOwnProperty("marker")) {
+      this.props.start.marker.setMap(null);
+    }
+
+    if (this.props.end.hasOwnProperty("marker")) {
+      this.props.end.marker.setMap(null);
+    }
+
     this.props.clearMarkers();
   }
 
