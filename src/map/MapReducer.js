@@ -1,7 +1,10 @@
-import merge from 'lodash/merge';
-import { UPDATE_LOCATION, SET_MARKERS, ADD_MARKER, ADD_HISTORY, CLEAR } from './MapActions';
+import _ from 'lodash';
+import { UPDATE_LOCATION, SET_MARKERS, SET_START, SET_END,
+          ADD_MARKER, ADD_HISTORY, CLEAR } from './MapActions';
 
 const defaultState = {
+  start: {},
+  end: {},
   coords:  {},
   markers: [],
   history: []
@@ -9,7 +12,7 @@ const defaultState = {
 
 const MapReducer = (state = defaultState, action) => {
   Object.freeze(state);
-  let newState = merge({}, state);
+  let newState = _.merge({}, state);
 
   switch(action.type){
     case UPDATE_LOCATION:
@@ -19,6 +22,28 @@ const MapReducer = (state = defaultState, action) => {
 
     case SET_MARKERS:
       newState.markers = action.markers;
+
+      return newState;
+
+    case SET_START:
+      if (_.isEmpty(action.marker)) {
+        newState.start.set = !newState.start.set;
+      }
+      else {
+        newState.start.set = !newState.start.set;
+        newState.start     = _.merge(newState.start, action.marker);
+      }
+
+      return newState;
+
+    case SET_END:
+      if (_.isEmpty(action.marker)) {
+        newState.end.set = !newState.end.set;
+      }
+      else {
+        newState.end.set = !newState.end.set;
+        newState.end     = _.merge(newState.end, action.marker);
+      }
 
       return newState;
 
@@ -34,6 +59,8 @@ const MapReducer = (state = defaultState, action) => {
 
     case CLEAR:
       newState.markers = [];
+      newState.start = { set: false };
+      newState.end = { set: false };
 
       return newState;
 

@@ -65,8 +65,9 @@ After dropping several markers, clicking the `Find Best Route` button sends off 
 
 ### Future Plans:
 - [x] instruction modal when page first loads
-- [ ] option to set start and end points
+- [x] option to set start and end points
 - [ ] store history to the browser using localStorage for continuous history
 - [ ] undo button
+- [ ] recenter button
 - [ ] allow for a route to be added to once it has been found
 - [ ] integrate Google Places API to allow for a place to be searched for

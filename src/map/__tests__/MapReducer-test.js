@@ -8,6 +8,8 @@ describe('MapReducer', () => {
 
   it('should initialize to the default state', () => {
     const defaultState = {
+      start: {},
+      end: {},
       coords:  {},
       markers: [],
       history: []
@@ -54,6 +56,60 @@ describe('MapReducer', () => {
       ];
       const newState = MapReducer(undefined, { type: 'SET_MARKERS', markers });
       expect(newState.markers).toEqual(markers);
+    });
+  });
+
+  describe('handling SET_START action', () => {
+    let marker;
+
+    beforeEach(() => marker = {
+      coords: { lat: 37.7749, lng: -122.4149 },
+      marker: { lat: 40.7128, lng: 74.0059   }
+    });
+
+    it('should assign start to marker and coords', () => {
+      const newState = MapReducer(undefined, { type: 'SET_START', marker });
+      expect(newState.start.marker).toEqual(marker.marker);
+      expect(newState.start.coords).toEqual(marker.coords);
+    });
+
+    it('should flip set to true when passed an empty object', () => {
+      const newState = MapReducer(undefined, { type: 'SET_START', marker: {} });
+      expect(newState.start.set).toBe(true);
+    });
+
+    it('should flip set to false when passed an object', () => {
+      let newState = MapReducer(undefined, { type: 'SET_START', marker: {} });
+      expect(newState.start.set).toBe(true);
+      newState = MapReducer(newState, { type: 'SET_START', marker });
+      expect(newState.start.set).toBe(false);
+    });
+  });
+
+  describe('handling SET_END action', () => {
+    let marker;
+
+    beforeEach(() => marker = {
+      coords: { lat: 37.7749, lng: -122.4149 },
+      marker: { lat: 40.7128, lng: 74.0059   }
+    });
+
+    it('should assign end to marker and coords', () => {
+      const newState = MapReducer(undefined, { type: 'SET_END', marker });
+      expect(newState.end.marker).toEqual(marker.marker);
+      expect(newState.end.coords).toEqual(marker.coords);
+    });
+
+    it('should flip set to true when passed an empty object', () => {
+      const newState = MapReducer(undefined, { type: 'SET_END', marker: {} });
+      expect(newState.end.set).toBe(true);
+    });
+
+    it('should flip set to false when passed an object', () => {
+      let newState = MapReducer(undefined, { type: 'SET_END', marker: {} });
+      expect(newState.end.set).toBe(true);
+      newState = MapReducer(newState, { type: 'SET_END', marker });
+      expect(newState.end.set).toBe(false);
     });
   });
 

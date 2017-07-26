@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from 'react-modal';
 import { modalStyle } from './ModalStyle';
 import './Buttons.css';
+import _ from 'lodash';
 
 class Buttons extends Component {
   constructor(props) {
@@ -19,6 +20,23 @@ class Buttons extends Component {
   }
 
   componentDidMount() {
+    document.getElementById('start').addEventListener("click", e => {
+      if (this.props.end.set) {
+        window.alert("Please select end location first");
+        document.getElementById("end").focus();
+        return;
+      }
+      this.props.setStart({});
+    });
+    document.getElementById('end').addEventListener("click", e => {
+      if (this.props.start.set) {
+        window.alert("Please select start location first");
+        document.getElementById("start").focus();
+        return;
+      }
+      this.props.setEnd({});
+    });
+
     document.getElementById('clear').addEventListener("click", e => {
       e.preventDefault();
       this.clearMap();
@@ -27,11 +45,12 @@ class Buttons extends Component {
 
     document.getElementById('route').addEventListener("click", e => {
       e.preventDefault();
-      if (Object.keys(this.props.nodes).length === 0) {
+      if (_.isEmpty(this.props.nodes) && _.isEmpty(this.props.coords) &&
+        !(_.isEmpty(this.props.start.coords) && _.isEmpty(this.props.start.coords))) {
         window.alert("Please add a few pins first");
         return ;
       }
-      else if (Object.keys(this.props.coords).length === 0) {
+      else if (_.isEmpty(this.props.coords)) {
         window.alert("Please enable location");
         return ;
       }
@@ -57,7 +76,11 @@ class Buttons extends Component {
             this.clearMap();
             this.clearMarkers();
             this.props.setMarkers(route.markers);
+            this.props.setStart(route.start);
+            this.props.setEnd(route.end);
             route.markers.forEach(marker => marker.setMap(this.props.map));
+            route.start.marker.setMap(this.props.map);
+            route.end.marker.setMap(this.props.map);
           } }>
           { route.name }
         </li>
@@ -70,8 +93,18 @@ class Buttons extends Component {
   }
 
   clearMarkers() {
-    if (this.props.markers.length === 0) { return; }
-    this.props.markers.forEach(marker => marker.setMap(null));
+    if (this.props.markers.length !== 0) {
+      this.props.markers.forEach(marker => marker.setMap(null));
+    }
+
+    if (this.props.start.hasOwnProperty("marker")) {
+      this.props.start.marker.setMap(null);
+    }
+
+    if (this.props.end.hasOwnProperty("marker")) {
+      this.props.end.marker.setMap(null);
+    }
+
     this.props.clearMarkers();
   }
 
@@ -81,10 +114,12 @@ class Buttons extends Component {
 
   getDirections() {
     let directions = new google.maps.DirectionsService();
+    let origin = _.isEmpty(this.props.start.coords) ? this.props.coords : this.props.start.coords;
+    let destination = _.isEmpty(this.props.end.coords) ? this.props.coords : this.props.end.coords;
 
     directions.route({
-      origin: this.props.coords,
-      destination: this.props.coords,
+      origin: origin,
+      destination: destination,
       waypoints: this.props.nodes.map(node => ({ location: node, stopover: true })),
       optimizeWaypoints: true,
       travelMode: google.maps.TravelMode.DRIVING,
@@ -98,6 +133,8 @@ class Buttons extends Component {
         response.routes[0].legs = response.routes[0].legs.filter(leg => leg.distance.value > 0);
         history.name = this.props.getHistoryName(response.routes[0].legs);
         history.markers = this.props.markers;
+        history.start = this.props.start;
+        history.end = this.props.end;
 
         this.props.addHistory(history);
         this.clearMarkers();
@@ -114,8 +151,12 @@ class Buttons extends Component {
   render() {
     return(
       <div id="buttons">
+        <button id="start" >Set Start</button>
+        <button id="end" >Set End</button>
         <button id="clear" >Clear</button>
+
         <button id="route">Find Best Route</button>
+
         <button id="history">History</button>
         <Modal isOpen={this.state.modal}
         contentLabel="Modal"

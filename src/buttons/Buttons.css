@@ -18,7 +18,21 @@ button:hover, p:hover {
   cursor: pointer;
 }
 
+#start:focus, #end:focus {
+  outline: 0;
+  border: 1px solid red;
+}
+
+#route:focus, #clear:focus, #history:focus {
+  outline: 0;
+}
+
 #route {
+  border-left: none;
+  border-right: none;
+}
+
+#end {
   border-left: none;
   border-right: none;
 }

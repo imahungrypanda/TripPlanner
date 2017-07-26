@@ -1,5 +1,7 @@
 import {
   setMarkers,
+  setStart,
+  setEnd,
   addMarker,
   addHistory,
   clearMarkers
@@ -32,6 +34,40 @@ describe('MapActions', () => {
       const expectedActions = [{ type: 'SET_MARKERS', markers }];
 
       store.dispatch(setMarkers(markers));
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  describe('setStart', () => {
+    it('should return a function', () => {
+      expect(typeof setStart).toEqual('function');
+    });
+
+    it('dispatches addStart', () => {
+      const marker = {
+        position: { lat: 37.7749, lng: -122.4149 }
+      };
+
+      const expectedActions = [{ type: 'SET_START', marker }];
+
+      store.dispatch(setStart(marker));
+      expect(store.getActions()).toEqual(expectedActions);
+    });
+  });
+
+  describe('setEnd', () => {
+    it('should return a function', () => {
+      expect(typeof setEnd).toEqual('function');
+    });
+
+    it('dispatches addEnd', () => {
+      const marker = {
+        position: { lat: 37.7749, lng: -122.4149 }
+      };
+
+      const expectedActions = [{ type: 'SET_END', marker }];
+
+      store.dispatch(setEnd(marker));
       expect(store.getActions()).toEqual(expectedActions);
     });
   });
