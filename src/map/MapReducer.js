@@ -27,22 +27,22 @@ const MapReducer = (state = defaultState, action) => {
 
     case SET_START:
       if (_.isEmpty(action.marker)) {
-        newState.start.set    = !newState.start.set;
+        newState.start.set = !newState.start.set;
       }
       else {
-        newState.start.set    = !newState.start.set;
-        newState.start = _.merge(newState.start, action.marker);
+        newState.start.set = !newState.start.set;
+        newState.start     = _.merge(newState.start, action.marker);
       }
 
       return newState;
 
     case SET_END:
       if (_.isEmpty(action.marker)) {
-        newState.end.set    = !newState.end.set;
+        newState.end.set = !newState.end.set;
       }
       else {
-        newState.end.set    = !newState.end.set;
-        newState.end = _.merge(newState.end, action.marker);
+        newState.end.set = !newState.end.set;
+        newState.end     = _.merge(newState.end, action.marker);
       }
 
       return newState;

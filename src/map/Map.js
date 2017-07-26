@@ -46,18 +46,32 @@ class Map extends Component {
   }
 
   placeMarker(coords) {
-    let marker = new google.maps.Marker({
-      position: coords,
-      map: this.map
-    });
+    let marker;
 
     if (this.props.start) {
+      marker = new google.maps.Marker({
+        position: coords,
+        label: "S",
+        map: this.map
+      });
+
       this.props.setStart({coords, marker});
     }
     else if (this.props.end) {
+      marker = new google.maps.Marker({
+        position: coords,
+        label: "E",
+        map: this.map
+      });
+
       this.props.setEnd({coords, marker});
     }
     else {
+      marker = new google.maps.Marker({
+        position: coords,
+        map: this.map
+      });
+
       this.props.addMarker(marker);
     }
   }

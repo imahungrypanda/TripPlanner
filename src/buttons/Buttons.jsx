@@ -21,9 +21,19 @@ class Buttons extends Component {
 
   componentDidMount() {
     document.getElementById('start').addEventListener("click", e => {
+      if (this.props.end.set) {
+        window.alert("Please select end location first");
+        document.getElementById("end").focus();
+        return;
+      }
       this.props.setStart({});
     });
     document.getElementById('end').addEventListener("click", e => {
+      if (this.props.start.set) {
+        window.alert("Please select start location first");
+        document.getElementById("start").focus();
+        return;
+      }
       this.props.setEnd({});
     });
 
