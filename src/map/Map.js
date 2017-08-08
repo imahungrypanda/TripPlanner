@@ -90,9 +90,11 @@ class Map extends Component {
     return (
       <div>
         <Buttons map={ this.map } directionsDisplay={ this.directionsDisplay }/>
+        <div id="messages"></div>
         <div className='Map'>
           <div ref='map' id="map" style={mapStyle}>Map</div>
         </div>
+
         <Modal isOpen={this.state.modal}
         contentLabel="Modal"
         style={ modalStyle }
@@ -100,7 +102,7 @@ class Map extends Component {
         onRequestClose={ this.flipModal } >
           <div style={ {width: '500px', textAlign: 'center', padding: '10px', background: 'white' } }>
             <h3>Welcome to Trip Planner!</h3>
-            <p style={ { textAlign: 'justify' } }>To began place a few markers on the map, then when ready click Find Best Route to find the optimal route from your current location to all the waypoints ending back at your current location.</p>
+            <p style={ { textAlign: 'justify' } }>To begin place a few markers on the map, then when ready click Find Best Route to find the optimal route from your current location to all the waypoints ending back at your current location.</p>
           </div>
         </Modal >
       </div>

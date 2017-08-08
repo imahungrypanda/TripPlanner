@@ -90,6 +90,7 @@ class Buttons extends Component {
 
   clearMap() {
     this.props.directionsDisplay.setMap(null);
+    document.getElementById('messages').innerHTML = "";
   }
 
   clearMarkers() {
@@ -128,17 +129,38 @@ class Buttons extends Component {
 
     function callback(response, status) {
       if (status === "OK") {
+        let time = 0;
         let history = {};
-
+        let hours, minutes, seconds;
+        let duration = "The trip should take about ";
         response.routes[0].legs = response.routes[0].legs.filter(leg => leg.distance.value > 0);
+        console.log(response.routes[0].legs);
+        response.routes[0].legs.forEach(leg => {
+         time += leg.duration.value;
+        });
+
         history.name = this.props.getHistoryName(response.routes[0].legs);
         history.markers = this.props.markers;
         history.start = this.props.start;
         history.end = this.props.end;
+        hours = Math.floor(time / 3600);
+        minutes = Math.floor(time / 60 % 60);
+        seconds = Math.floor(time % 60);
+
+        if (hours > 0){
+          duration += `${hours.toString()} hours`;
+        }
+        if (minutes > 0){
+          duration += (duration !== undefined ? ` ${minutes.toString()} minutes` : `${minutes.toString()} minutes`);
+        }
+
+        duration += (duration !== undefined ? ` ${seconds.toString()} seconds` : `${seconds.toString()} seconds`);
 
         this.props.addHistory(history);
         this.clearMarkers();
 
+        document.getElementById('messages').innerHTML = duration;
+        document.getElementById('messages').style.color = 'red';
         this.props.directionsDisplay.setMap(this.props.map);
         this.props.directionsDisplay.setDirections(response);
       }

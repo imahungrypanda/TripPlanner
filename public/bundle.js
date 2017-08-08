@@ -41905,6 +41905,7 @@ var Map = function (_Component) {
         'div',
         null,
         _react2.default.createElement(_ButtonsContainer2.default, { map: this.map, directionsDisplay: this.directionsDisplay }),
+        _react2.default.createElement('div', { id: 'messages' }),
         _react2.default.createElement(
           'div',
           { className: 'Map' },
@@ -41932,7 +41933,7 @@ var Map = function (_Component) {
             _react2.default.createElement(
               'p',
               { style: { textAlign: 'justify' } },
-              'To began place a few markers on the map, then when ready click Find Best Route to find the optimal route from your current location to all the waypoints ending back at your current location.'
+              'To begin place a few markers on the map, then when ready click Find Best Route to find the optimal route from your current location to all the waypoints ending back at your current location.'
             )
           )
         )
@@ -43005,6 +43006,7 @@ var Buttons = function (_Component) {
     key: 'clearMap',
     value: function clearMap() {
       this.props.directionsDisplay.setMap(null);
+      document.getElementById('messages').innerHTML = "";
     }
   }, {
     key: 'clearMarkers',
@@ -43050,19 +43052,42 @@ var Buttons = function (_Component) {
 
       function callback(response, status) {
         if (status === "OK") {
+          var time = 0;
           var history = {};
-
+          var hours = void 0,
+              minutes = void 0,
+              seconds = void 0;
+          var duration = "The trip should take about ";
           response.routes[0].legs = response.routes[0].legs.filter(function (leg) {
             return leg.distance.value > 0;
           });
+          console.log(response.routes[0].legs);
+          response.routes[0].legs.forEach(function (leg) {
+            time += leg.duration.value;
+          });
+
           history.name = this.props.getHistoryName(response.routes[0].legs);
           history.markers = this.props.markers;
           history.start = this.props.start;
           history.end = this.props.end;
+          hours = Math.floor(time / 3600);
+          minutes = Math.floor(time / 60 % 60);
+          seconds = Math.floor(time % 60);
+
+          if (hours > 0) {
+            duration += hours.toString() + ' hours';
+          }
+          if (minutes > 0) {
+            duration += duration !== undefined ? ' ' + minutes.toString() + ' minutes' : minutes.toString() + ' minutes';
+          }
+
+          duration += duration !== undefined ? ' ' + seconds.toString() + ' seconds' : seconds.toString() + ' seconds';
 
           this.props.addHistory(history);
           this.clearMarkers();
 
+          document.getElementById('messages').innerHTML = duration;
+          document.getElementById('messages').style.color = 'red';
           this.props.directionsDisplay.setMap(this.props.map);
           this.props.directionsDisplay.setDirections(response);
         } else {
@@ -43243,7 +43268,7 @@ exports = module.exports = __webpack_require__(56)(undefined);
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "#messages {\n  position: absolute;\n  z-index: 100;\n  left: 0;\n  right: 0;\n  margin-left: auto;\n  margin-right: auto;\n  padding: 45px;\n  text-align: center;\n}\n", ""]);
 
 // exports
 
